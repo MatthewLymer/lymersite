@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>@(ViewBag.Title ?? "Web Developer Matthew Lymer")</title>
+        @Styles.Render("~/Content/Styles/Master")
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                @Html.ActionLink("M. Lymer", "Index", "Home", null, new { @class = "logo" })
+
+                <div class="nav">
+                    @Html.Partial("LayoutNavigation")
+                </div>
+
+                <div class="social-links">
+                    <a href="skype:matthew.k.lymer" class="skype" title="matthew.k.lymer on Skype">matthew.k.lymer on Skype</a>
+                    <a href="https://www.linkedin.com/in/matthewlymer" class="linkedin" title="Matthew Lymer on LinkedIn">Matthew Lymer on LinkedIn</a>
+                    <a href="http://stackoverflow.com/users/507793/matthew" class="stackoverflow" title="Matthew on Stack Overflow">Matthew on Stack Overflow</a>
+                    <a href="https://github.com/matthewlymer" class="github" title="MatthewLymer on GitHub">MatthewLymer on GitHub</a>
+                    <a href="https://twitter.com/MatthewLymer" class="twitter" title="@("@")matthewlymer on Twitter">@@matthewlymer on Twitter</a>
+                    <a href="https://www.facebook.com/matthew.lymer" class="facebook" title="Matthew Lymer on Facebook">Matthew Lymer on Facebook</a>
+                </div>
+            </div>
+
+            <div id="main">
+                @RenderBody()
+            </div>
+
+            <div id="mega-footer">
+                <div class="company-info">
+                    <h1>Contact</h1>
+                    
+                    @*<p class="blerb">
+                        Lorem Ipsum is dummy text the printing and typesetting instry. 
+                        Ipsum has been.Lorem Ipsis sly dummy text of the printing and setting industry.
+                    </p>*@
+
+                    <p class="details">
+                        289-928-3347<br />
+                        <a href="mailto:matthew@("@")lymer.ca">matthew@@lymer.ca</a><br/>
+                        88 Pine Crest Road<br />
+                        Toronto, Ontario, M6P 3G5<br />
+                    </p>
+                </div>
+                <div class="latest-news">
+                    <div class="from-the-blog">
+                        <h2>From the Blog</h2>
+                        @Html.Action("RecentBlogArticles", "Home")
+                    </div>
+                    <div class="from-twitter">
+                        <h2>Twitter</h2>
+                        @Html.Action("RecentTweets", "Home")
+                    </div>
+                </div>
+            </div>
+
+            <div id="nav-footer">
+                <div class="copyright">
+                    Made by me, design by nine
+                </div>
+                <div class="nav">
+                    @Html.Partial("LayoutNavigation")
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
