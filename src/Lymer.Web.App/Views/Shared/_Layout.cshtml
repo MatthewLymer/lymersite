@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewBag.Title ?? "Software Developer Matthew Lymer")</title>
+
+    <link rel="stylesheet" href="~/css/normalize.css" />
+    <link rel="stylesheet" href="~/css/font-economica.css" />
+    <link rel="stylesheet/less" href="~/css/site.less" />
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        @Html.ActionLink("M. Lymer", "Index", "Home", null, new {@class = "logo"})
+
+        <div class="nav">
+            <partial name="LayoutNavigation"/>
+        </div>
+
+        <div class="social-links">
+            <a href="skype:matthew.k.lymer" class="skype" title="matthew.k.lymer on Skype">matthew.k.lymer on Skype</a>
+            <a href="https://www.linkedin.com/in/matthewlymer" class="linkedin" title="Matthew Lymer on LinkedIn">Matthew Lymer on LinkedIn</a>
+            <a href="http://stackoverflow.com/users/507793/matthew" class="stackoverflow" title="Matthew on Stack Overflow">Matthew on Stack Overflow</a>
+            <a href="https://github.com/matthewlymer" class="github" title="MatthewLymer on GitHub">MatthewLymer on GitHub</a>
+            <a href="https://twitter.com/MatthewLymer" class="twitter" title="@("@")matthewlymer on Twitter">@@matthewlymer on Twitter</a>
+            <a href="https://www.facebook.com/matthew.lymer" class="facebook" title="Matthew Lymer on Facebook">Matthew Lymer on Facebook</a>
+        </div>
+    </div>
+
+    <div id="main">
+        @RenderBody()
+    </div>
+
+    <div id="mega-footer">
+        <div class="company-info">
+            <h1>Contact</h1>
+
+            <p class="details">
+                289-928-3347<br/>
+                <a href="javascript:;" class="cryptedmail"
+                   data-name="matthew"
+                   data-domain="lymer"
+                   data-tld="ca"
+                   onclick="window.location.href = 'mailto:' + this.dataset.name + '@@' + this.dataset.domain + '.' + this.dataset.tld; return false;"></a>
+                <br/>
+                318 Richmond St West<br/>
+                Unit 615<br/>
+                Toronto, Ontario<br/>
+                M5V 0B4<br/>
+            </p>
+        </div>
+        <div class="latest-news">
+            <div class="from-the-blog">
+                <h2>From the Blog</h2>
+                <ul id="articles"><li>No posts</li></ul>
+            </div>
+            <div class="from-twitter">
+                <h2>Twitter</h2>
+                <ul id="tweets"><li>No tweets</li></ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="nav-footer">
+        <div class="copyright">
+            Made by me, design by nine
+        </div>
+        <div class="nav">
+            <partial name="LayoutNavigation"/>
+        </div>
+    </div>
+</div>
+
+@RenderSection("Scripts", false)
+</body>
+</html>
