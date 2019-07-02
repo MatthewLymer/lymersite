@@ -1,0 +1,9 @@
+version: "3.2"
+
+services:
+  lymer-webui-app:
+    build:
+      context: ./
+      dockerfile: ./devops/containers/lymer-web-app/Dockerfile
+    ports:
+      - 5000:80
