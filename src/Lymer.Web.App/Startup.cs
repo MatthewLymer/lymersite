@@ -10,13 +10,13 @@ namespace Lymer.Web.App
 {
     internal sealed class Startup
     {
+        private readonly IConfiguration _configuration;
+
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void ConfigureServices(IServiceCollection services)
