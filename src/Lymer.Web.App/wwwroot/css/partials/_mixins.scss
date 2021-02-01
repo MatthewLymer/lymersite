@@ -1,0 +1,26 @@
+﻿@mixin clearfix {
+    zoom: 1;
+
+    &:after {
+        display: block;
+        visibility: hidden;
+        height: 0;
+        clear: both;
+        content: ' ';
+    }
+}
+
+@mixin equal-height-column($padding-top, $padding-bottom, $margin-top, $margin-bottom) {
+    padding-top: 99999px + $padding-top;
+    padding-bottom: 99999px + $padding-bottom;
+    margin-top: -99999px + $margin-top;
+    margin-bottom: -99999px + $margin-bottom;
+}
+
+@mixin font-helvetica() {
+    font-family: helvetica, arial, sans-serif;
+}
+
+@mixin font-economica() {
+    font-family: economica, helvetica, arial, sans-serif;
+}
