@@ -1,20 +1,28 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Lymer.Web.App
 {
-    public static class Program
+    internal static class Program
     {
-        public static void Main(string[] args)
+        private static Task Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            return CreateHostBuilder(args).Build().RunAsync();
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return WebHost
+            return Host
                 .CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    var port = Environment.GetEnvironmentVariable("LS_PORT") ?? "5000";                    
+                    
+                    webBuilder.UseUrls($"http://*:{port}");
+                    webBuilder.UseStartup<Startup>();
+                });
         }
     }
 }

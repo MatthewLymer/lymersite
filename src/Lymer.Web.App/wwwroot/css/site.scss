@@ -1,9 +1,9 @@
-﻿@import 'mixins.less';
+﻿@import 'partials/mixins';
 
-@headerHeight: 111px;
-@footerHeight: 47px;
+$headerHeight: 111px;
+$footerHeight: 47px;
 
-@accent: #1bc4de;
+$accent: #1bc4de;
 
 body {
     background: #f4f4f4 url(../images/bg-body.jpg);
@@ -12,7 +12,7 @@ body {
 }
 
 body, legend, textarea, select, input, button {
-    .font-helvetica;
+    @include font-helvetica;
     font-size: 13px;
 }
 
@@ -29,7 +29,7 @@ a {
 }
 
 h1 {
-    .font-economica;
+    @include font-economica;
 }
 
 #container {
@@ -38,20 +38,20 @@ h1 {
 }
 
 #header {
-    .clearfix;
+    @include clearfix;
     position: relative;
     background: #fff;
-    height: @headerHeight;
+    height: $headerHeight;
     margin-bottom: 18px;
 
     .logo {
         float: left;
-        .font-economica;
+        @include font-economica();
         font-size: 65px;
-        line-height: @headerHeight;
+        line-height: $headerHeight;
         text-transform: lowercase;
         color: #fff;
-        background: @accent;
+        background: $accent;
         height: 100%;
         padding: 0 39px;
 
@@ -61,15 +61,15 @@ h1 {
     }
 
     .nav {
-        .clearfix;
+        @include clearfix;
         float: left;
         margin-left: 7px;
 
         a {
             float: left;
-            .font-economica;
+            @include font-economica;
             font-size: 24px;
-            line-height: @headerHeight;
+            line-height: $headerHeight;
             color: #676767;
             text-decoration: none;
             padding: 0 11px;
@@ -81,7 +81,7 @@ h1 {
     }
 
     .social-links {
-        .clearfix;
+        @include clearfix;
         position: absolute;
         right: 39px;
         top: 35px;
@@ -110,7 +110,7 @@ h1 {
 
 
 #mega-footer {
-    .clearfix;
+    @include clearfix;
     overflow: hidden;
 
     .company-info,
@@ -119,10 +119,10 @@ h1 {
     }
 
     .company-info {
-        .equal-height-column(40px, 40px, 0, 0);
+        @include equal-height-column(40px, 40px, 0, 0);
         padding-left: 40px;
         padding-right: 40px;
-        background: @accent;
+        background: $accent;
         color: #fff;
         width: 254px - 40px * 2;
 
@@ -139,7 +139,7 @@ h1 {
     }
 
     .latest-news {
-        .equal-height-column(60px, 40px, 0, 0);
+        @include equal-height-column(60px, 40px, 0, 0);
         padding-left: 27px;
         padding-right: 27px;
         background: #32363e;
@@ -151,7 +151,7 @@ h1 {
         }
 
         h2 {
-            .font-economica;
+            @include font-economica;
             font-size: 22px;
             font-weight: normal;
             color: #fff;
@@ -202,14 +202,14 @@ h1 {
 }
 
 #nav-footer {
-    .clearfix;
+    @include clearfix;
     background: #25272d;
-    height: @footerHeight;
+    height: $footerHeight;
     padding: 0 42px;
-    .font-economica;
+    @include font-economica;
     font-size: 18px;
     color: #fff;
-    line-height: @footerHeight;
+    line-height: $footerHeight;
 
     .copyright {
         float: left;
@@ -228,7 +228,7 @@ h1 {
             }
 
             &:hover {
-                color: @accent;
+                color: $accent;
                 text-decoration: none;
             }
         }
@@ -238,66 +238,66 @@ h1 {
 /* 
     social links 
 */
-@socialLinkWidth: 35px;
-@socialLinkPitch: @socialLinkWidth + 1px;
+$socialLinkWidth: 35px;
+$socialLinkPitch: $socialLinkWidth + 1px;
 
-.social-link-background-position(@x, @y) {
-    background-position: (-@socialLinkPitch * @x) (-@socialLinkPitch * @y);
+@mixin social-link-background-position($x, $y) {
+    background-position: (-$socialLinkPitch * $x) (-$socialLinkPitch * $y);
 }
 
 .social-links a {
     display: block;
-    width: @socialLinkWidth;
-    height: @socialLinkWidth;
+    width: $socialLinkWidth;
+    height: $socialLinkWidth;
     background: url(../images/sprite-social-icons.png) no-repeat;
     text-indent: -9999px;
     overflow: hidden;
 
     &.facebook {
-        .social-link-background-position(3, 0);
+        @include social-link-background-position(3, 0);
 
         &:hover {
-            .social-link-background-position(3, 2);
+            @include social-link-background-position(3, 2);
         }
     }
 
     &.skype {
-        .social-link-background-position(23, 0);
+        @include social-link-background-position(23, 0);
 
         &:hover {
-            .social-link-background-position(23, 2);
+            @include social-link-background-position(23, 2);
         }
     }
 
     &.twitter {
-        .social-link-background-position(2, 0);
+        @include social-link-background-position(2, 0);
 
         &:hover {
-            .social-link-background-position(2, 2);
+            @include social-link-background-position(2, 2);
         }
     }
 
     &.linkedin {
-        .social-link-background-position(6, 1);
+        @include social-link-background-position(6, 1);
 
         &:hover {
-            .social-link-background-position(6, 3);
+            @include social-link-background-position(6, 3);
         }
     }
 
     &.stackoverflow {
-        .social-link-background-position(8, 1);
+        @include social-link-background-position(8, 1);
 
         &:hover {
-            .social-link-background-position(8, 3);
+            @include social-link-background-position(8, 3);
         }
     }
 
     &.github {
-        .social-link-background-position(9, 1);
+        @include social-link-background-position(9, 1);
 
         &:hover {
-            .social-link-background-position(9, 3);
+            @include social-link-background-position(9, 3);
         }
     }
 }

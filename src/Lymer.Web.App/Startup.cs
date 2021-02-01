@@ -1,63 +1,59 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Lymer.Web.App
 {
     internal sealed class Startup
     {
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _env;
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
-        }
-
+            _env = env;
+        }        
+        
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
+            var mvcBuilder = services.AddRazorPages();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+                mvcBuilder.AddRazorRuntimeCompilation();
+            }          
+            
+            services.AddWebOptimizer(pipeline =>
             {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseStaticFiles(CreateStaticFileOptions());
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                pipeline.MinifyJsFiles();
+                pipeline.CompileScssFiles();
             });
         }
 
-        private static StaticFileOptions CreateStaticFileOptions()
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        public void Configure(IApplicationBuilder app)
         {
-            return new StaticFileOptions
+            if (_env.IsDevelopment())
             {
-                ContentTypeProvider = new FileExtensionContentTypeProvider
-                {
-                    Mappings =
-                    {
-                        [".less"] = "text/plain"
-                    }
-                }
-            };
-        }
+                app.UseDeveloperExceptionPage();
+            }
+            
+            app.UseWebOptimizer();
+            
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseEndpoints(x =>
+            {
+                x.MapRazorPages();
+            });
+        }       
     }
 }
