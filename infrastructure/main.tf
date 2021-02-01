@@ -1,10 +1,10 @@
 locals {
-  region = "northamerica-northeast1"
+  region          = "northamerica-northeast1"
   billing_account = "017629-BB9381-1C2281"
-  
+
   project = {
-	  id = "matthewlymer-lymersite"
-	  name = "LymerSite"
+    id   = "matthewlymer-lymersite"
+    name = "LymerSite"
   }
 
   public_domain_name = "lymer.ca"
@@ -16,14 +16,14 @@ provider "google" {
 }
 
 resource "google_project" "default" {
-  project_id = local.project.id
-  name = local.project.name
+  project_id      = local.project.id
+  name            = local.project.name
   billing_account = local.billing_account
 }
 
 terraform {
   backend "gcs" {
     bucket = "490635812867-tfstate"
-    prefix  = "matthewlymer-lymersite"
+    prefix = "matthewlymer-lymersite"
   }
 }
