@@ -4,6 +4,6 @@ services:
   lymer-webui-app:
     build:
       context: ./
-      dockerfile: ./devops/containers/lymer-web-app/Dockerfile
+      dockerfile: ./containers/webapp/Dockerfile
     ports:
-      - 5000:80
+      - 5000:5000
