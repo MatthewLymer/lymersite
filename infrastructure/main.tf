@@ -8,6 +8,11 @@ locals {
   }
 
   public_domain_name = "lymer.ca"
+
+  uptime_check = {
+    path    = "/"
+    content = "Matthew Lymer"
+  }
 }
 
 provider "google" {
