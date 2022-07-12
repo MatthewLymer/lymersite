@@ -238,3 +238,7 @@ _Pvt_Extensions
 
 # terraform
 .terraform
+
+# macos
+.DS_Store
+
