@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,10 +16,42 @@ namespace Lymer.ContentManagement.Markdown.Tests
         [Fact]
         public async Task ShouldReturnNoArticles()
         {
-            var fileProvider = new MemoryFileProvider();
+            var fileProvider = new MemoryArticleProvider();
             var provider = new MarkdownContentProvider(fileProvider);
             var articles = await provider.GetArticlesAsync(CancellationToken.None);
             Assert.Empty(articles);
+        }
+
+        [Fact]
+        public async Task ShouldGetExceptionWhenMetadataNotDelimited()
+        {
+            const string fileContent = "---";
+            
+            var fileProvider = new MemoryArticleProvider();
+            
+            fileProvider.AddFile("foo.md", fileContent);
+            
+            var provider = new MarkdownContentProvider(fileProvider);
+            
+            await Assert.ThrowsAsync<IOException>(() => provider.GetArticlesAsync(CancellationToken.None));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("\n---\ntitle: foo\n---")]
+        [InlineData("hello world\n---\ntitle: foo\n---")]
+        [InlineData(" ---\ntitle: foo\n---")]
+        public async Task ShouldReturnArticleWithNoMetadata(string fileContent)
+        {   
+            var fileProvider = new MemoryArticleProvider();
+            
+            fileProvider.AddFile("foo.md", fileContent);
+            
+            var provider = new MarkdownContentProvider(fileProvider);
+            
+            var articles = await provider.GetArticlesAsync(CancellationToken.None);
+            
+            Assert.Collection(articles, x => Assert.Null(x.Metadata));
         }
 
         [Fact]
@@ -35,10 +66,9 @@ tags:
   - tag1
   - tag2
   - tag3
----
-Hello World";
+---";
             
-            var fileProvider = new MemoryFileProvider();
+            var fileProvider = new MemoryArticleProvider();
             fileProvider.AddFile("foo.md", fileContent);
             
             var provider = new MarkdownContentProvider(fileProvider);
@@ -57,44 +87,44 @@ Hello World";
         }
     }
 
-    internal sealed class MemoryFileProvider : IFileProvider
+    internal sealed class MemoryArticleProvider : IArticleProvider
     {
-        private readonly List<(string Name, string Content)> _files = new List<(string Name, string Content)>();
+        private readonly List<(string Handle, string Content)> _files = new List<(string Handle, string Content)>();
         
-        public void AddFile(string name, string content)
+        public void AddFile(string handle, string content)
         {
-            _files.Add((name, content));
+            _files.Add((handle, content));
         }
 
-        public async Task<IReadOnlyCollection<string>> GetFileNamesAsync(CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<string>> GetHandlesAsync(CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
-            return _files.Select(x => x.Name).ToList().AsReadOnly();
+            return _files.Select(x => x.Handle).ToList().AsReadOnly();
         }
 
-        public async Task<Stream> OpenFileAsync(string name, CancellationToken cancellationToken)
+        public async Task<Stream> OpenByHandleAsync(string handle, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
-            var file = _files.Single(x => x.Name == name);
+            var file = _files.Single(x => x.Handle == handle);
 
             return new MemoryStream(Encoding.UTF8.GetBytes(file.Content));
         }
     }
 
-    internal interface IFileProvider
+    internal interface IArticleProvider
     {
-        Task<IReadOnlyCollection<string>> GetFileNamesAsync(CancellationToken cancellationToken);
-        Task<Stream> OpenFileAsync(string name, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<string>> GetHandlesAsync(CancellationToken cancellationToken);
+        Task<Stream> OpenByHandleAsync(string handle, CancellationToken cancellationToken);
     }
 
     internal sealed class MarkdownContentProvider
     {
-        private readonly IFileProvider _fileProvider;
+        private readonly IArticleProvider _articleProvider;
 
-        public MarkdownContentProvider(IFileProvider fileProvider)
+        public MarkdownContentProvider(IArticleProvider articleProvider)
         {
-            _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
+            _articleProvider = articleProvider ?? throw new ArgumentNullException(nameof(articleProvider));
         }
 
         public async Task<IReadOnlyCollection<Article>> GetArticlesAsync(CancellationToken cancellationToken)
@@ -105,16 +135,37 @@ Hello World";
             
             var result = new List<Article>();
             
-            foreach (var fileName in await _fileProvider.GetFileNamesAsync(cancellationToken))
+            foreach (var handle in await _articleProvider.GetHandlesAsync(cancellationToken))
             {
-                await using var stream = await _fileProvider.OpenFileAsync(fileName, cancellationToken);
-                using var reader = new StreamReader(stream);
+                await using var stream = await _articleProvider.OpenByHandleAsync(handle, cancellationToken);
+                
+                using var streamReader = new StreamReader(stream);
 
-                var content = await reader.ReadToEndAsync();
+                var metadataBuilder = new StringBuilder();
 
-                var matches = Regex.Matches(content, "---(.*)---", RegexOptions.Singleline);
+                var line = await streamReader.ReadLineAsync();
+                
+                if (line == "---")
+                {
+                    while (true)
+                    {
+                        line = await streamReader.ReadLineAsync();
 
-                var metadata = deserializer.Deserialize<ArticleMetadata>(matches[0].Groups[1].Value);
+                        if (line == null)
+                        {
+                            throw new IOException("Got EOF, expected '---'.");
+                        }
+
+                        if (line == "---")
+                        {
+                            break;
+                        }
+
+                        metadataBuilder.AppendLine(line);
+                    }
+                }
+
+                var metadata = deserializer.Deserialize<ArticleMetadata>(metadataBuilder.ToString());
 
                 var article = new Article
                 {
