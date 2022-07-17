@@ -14,4 +14,8 @@
         <PackageReference Include="YamlDotNet" Version="11.2.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Lymer.ContentManagement.Markdown\Lymer.ContentManagement.Markdown.csproj" />
+    </ItemGroup>
+
 </Project>
