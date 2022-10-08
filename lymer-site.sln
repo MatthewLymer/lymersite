@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lymer.ContentManagement.Mar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lymer.ContentManagement.Markdown", "src\Lymer.ContentManagement.Markdown\Lymer.ContentManagement.Markdown.csproj", "{BBE4393B-9526-45EC-8417-2E8298A7634C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lymer.Domain", "src\Lymer.Domain\Lymer.Domain.csproj", "{30D8D813-2A71-4EBF-9E51-306387FE74E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lymer.Domain.Tests", "tests\Lymer.Domain.Tests\Lymer.Domain.Tests.csproj", "{CD9CD1C8-8233-4B28-AE92-60070A482E8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{BBE4393B-9526-45EC-8417-2E8298A7634C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBE4393B-9526-45EC-8417-2E8298A7634C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBE4393B-9526-45EC-8417-2E8298A7634C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D8D813-2A71-4EBF-9E51-306387FE74E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D8D813-2A71-4EBF-9E51-306387FE74E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D8D813-2A71-4EBF-9E51-306387FE74E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D8D813-2A71-4EBF-9E51-306387FE74E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD9CD1C8-8233-4B28-AE92-60070A482E8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9CD1C8-8233-4B28-AE92-60070A482E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9CD1C8-8233-4B28-AE92-60070A482E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9CD1C8-8233-4B28-AE92-60070A482E8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,8 @@ Global
 		{094D436D-5CFE-47F0-B30A-3DE4F1FC681A} = {7FB3B225-F1BE-4C0F-A7ED-2AEA8E0C46A1}
 		{F11BC205-75C2-40DC-B68F-550B46C3324F} = {FD99E7CA-E7C0-4CBD-AA3B-2A1B2824E52A}
 		{BBE4393B-9526-45EC-8417-2E8298A7634C} = {7FB3B225-F1BE-4C0F-A7ED-2AEA8E0C46A1}
+		{30D8D813-2A71-4EBF-9E51-306387FE74E7} = {7FB3B225-F1BE-4C0F-A7ED-2AEA8E0C46A1}
+		{CD9CD1C8-8233-4B28-AE92-60070A482E8C} = {FD99E7CA-E7C0-4CBD-AA3B-2A1B2824E52A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2D3C8B1-CA16-4594-917E-831479D4DC19}

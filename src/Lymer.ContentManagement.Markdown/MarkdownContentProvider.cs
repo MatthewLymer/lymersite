@@ -46,7 +46,7 @@ namespace Lymer.ContentManagement.Markdown
 
                         if (line == null)
                         {
-                            throw new IOException("Got EOF, expected '---'.");
+                            throw new IOException("Unexpected EOF.");
                         }
 
                         if (line == MetadataDelimiter)
