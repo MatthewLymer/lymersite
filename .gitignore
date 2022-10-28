@@ -238,3 +238,10 @@ _Pvt_Extensions
 
 # terraform
 .terraform
+
+# jekyll
+/.jekyll
+
+# macos files
+.DS_Store
+

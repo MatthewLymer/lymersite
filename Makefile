@@ -15,17 +15,33 @@ list:
 .PHONY: build
 build:
 	docker run -it --rm \
-	--volume="${PWD}/matthewlymer.github.io:/srv/jekyll:Z" \
+	--env "JEKYLL_ENV=production" \
+	--env "JEKYLL_DATA_DIR=/srv/matthewlymer.github.io" \
+	--volume="${PWD}/.git:/srv/.git:Z" \
+	--volume="${PWD}/matthewlymer.github.io:/srv/matthewlymer.github.io:Z" \
+	--volume="${PWD}/.jekyll/bundle:/usr/local/bundle:Z" \
+	--workdir "/srv/matthewlymer.github.io" \
 	jekyll/jekyll:$(JEKYLL_VERSION) \
 	jekyll build
 
 .PHONY: serve
 serve:
 	docker run -it --rm \
-	--volume="${PWD}/matthewlymer.github.io:/srv/jekyll:Z" \
+	--env "JEKYLL_DATA_DIR=/srv/matthewlymer.github.io" \
+	--volume="${PWD}/.git:/srv/.git:Z" \
+	--volume="${PWD}/matthewlymer.github.io:/srv/matthewlymer.github.io:Z" \
+	--volume="${PWD}/.jekyll/bundle:/usr/local/bundle:Z" \
 	--publish "4000:4000/tcp" \
+	--workdir "/srv/matthewlymer.github.io" \
 	jekyll/jekyll:$(JEKYLL_VERSION) \
 	jekyll serve
+
+.PHONY: httpd
+httpd:
+	docker run -it --rm \
+	--volume="${PWD}/matthewlymer.github.io/_site:/usr/local/apache2/htdocs:ro" \
+	--publish "4000:80/tcp" \
+	httpd:2.4
 
 .PHONY: build-docker
 build-docker:
