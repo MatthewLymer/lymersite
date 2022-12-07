@@ -1,4 +1,4 @@
-PACKAGE ?= webapp
+PACKAGE ?= httpd
 VERSION ?= latest
 
 DOCKER_REGISTRY_DOMAIN ?= gcr.io
@@ -11,6 +11,10 @@ JEKYLL_VERSION=3.8
 .PHONY: list
 list:
 	@LC_ALL=C $(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
+
+.PHONY: clean
+clean:
+	rm -r ${PWD}/matthewlymer.github.io/_site
 
 .PHONY: build
 build:
@@ -44,8 +48,8 @@ httpd:
 	httpd:2.4
 
 .PHONY: build-docker
-build-docker:
-	docker build -t "$(DOCKER_IMAGE_DOMAIN)" -f "./containers/webapp/Dockerfile" .
+build-docker: build
+	docker build -t "$(DOCKER_IMAGE_DOMAIN)" -f "./containers/$(PACKAGE)/Dockerfile" .
 
 .PHONY: auth-docker
 auth-docker:
@@ -54,4 +58,3 @@ auth-docker:
 .PHONY: push-docker
 push-docker: build-docker auth-docker
 	docker push "$(DOCKER_IMAGE_DOMAIN)"
-
