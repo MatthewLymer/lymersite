@@ -12,13 +12,9 @@ resource "google_cloud_run_service" "default" {
   template {
     spec {
       containers {
-        image = "gcr.io/${local.project.id}/webapp:latest"
+        image = "gcr.io/${local.project.id}/httpd:latest"
         ports {
-          container_port = 5000
-        }
-        env {
-          name  = "LS_PORT"
-          value = "5000"
+          container_port = 80
         }
       }
     }
