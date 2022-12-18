@@ -1,10 +1,6 @@
-PACKAGE ?= httpd
-VERSION ?= latest
-
-DOCKER_REGISTRY_DOMAIN ?= gcr.io
-DOCKER_REGISTRY_PATH ?= matthewlymer-lymersite
-DOCKER_IMAGE ?= $(DOCKER_REGISTRY_PATH)/$(PACKAGE):$(VERSION)
-DOCKER_IMAGE_DOMAIN ?= $(DOCKER_REGISTRY_DOMAIN)/$(DOCKER_IMAGE)
+DOCKER_TAG := latest
+DOCKER_REGISTRY_DOMAIN := gcr.io
+DOCKER_IMAGE := $(DOCKER_REGISTRY_DOMAIN)/matthewlymer-lymersite/httpd:$(DOCKER_TAG)
 
 JEKYLL_VERSION=3.8
 
@@ -17,7 +13,7 @@ clean:
 	rm -r ${PWD}/matthewlymer.github.io/_site
 
 .PHONY: build
-build:
+build: clean
 	docker run -it --rm \
 	--env "JEKYLL_ENV=production" \
 	--env "JEKYLL_DATA_DIR=/srv/matthewlymer.github.io" \
@@ -47,14 +43,11 @@ httpd:
 	--publish "4000:80/tcp" \
 	httpd:2.4
 
-.PHONY: build-docker
-build-docker: build
-	docker build -t "$(DOCKER_IMAGE_DOMAIN)" -f "./containers/$(PACKAGE)/Dockerfile" .
+.PHONY: docker-build
+docker-build: build
+	docker build --tag "$(DOCKER_IMAGE)" --file "./containers/httpd/Dockerfile" .
 
-.PHONY: auth-docker
-auth-docker:
+.PHONY: docker-push
+docker-push: docker-build
 	gcloud auth configure-docker "$(DOCKER_REGISTRY_DOMAIN)" --quiet
-
-.PHONY: push-docker
-push-docker: build-docker auth-docker
-	docker push "$(DOCKER_IMAGE_DOMAIN)"
+	docker push "$(DOCKER_IMAGE)"
