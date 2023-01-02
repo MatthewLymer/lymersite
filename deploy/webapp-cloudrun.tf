@@ -18,6 +18,12 @@ resource "google_cloud_run_service" "default" {
         }
       }
     }
+
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale" = 3
+      }
+    }
   }
 
   traffic {
