@@ -11,10 +11,18 @@ resource "google_cloud_run_service" "default" {
 
   template {
     spec {
+      timeout_seconds = 30
+
       containers {
-        image = "gcr.io/${local.project.id}/httpd:latest"
+        image = var.webapp_image
         ports {
           container_port = 80
+        }
+        resources {
+          limits = {
+            cpu    = "1000m"
+            memory = "128Mi"
+          }
         }
       }
     }
