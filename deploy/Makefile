@@ -13,12 +13,12 @@ push: build
 
 .PHONY: plan
 plan:
-	cd infrastructure && \
+	cd workload-webapp && \
 		terraform init && \
 		terraform plan -var 'webapp_image=$(DOCKER_IMAGE)'
 
 .PHONY: apply
 apply: push
-	cd infrastructure && \
+	cd workload-webapp && \
 		terraform init && \
 		terraform apply -auto-approve -var 'webapp_image=$(DOCKER_IMAGE)'

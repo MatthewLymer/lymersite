@@ -6,17 +6,6 @@ locals {
     id   = "matthewlymer-lymersite"
     name = "LymerSite"
   }
-
-  public_domain_name = "lymer.ca"
-
-  uptime_check = {
-    path    = "/"
-    content = "Matthew Lymer"
-  }
-}
-
-variable "webapp_image" {
-  type = string
 }
 
 provider "google" {
@@ -33,6 +22,6 @@ resource "google_project" "default" {
 terraform {
   backend "gcs" {
     bucket = "490635812867-tfstate"
-    prefix = "matthewlymer-lymersite"
+    prefix = "matthewlymer-lymersite-project"
   }
 }

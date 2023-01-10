@@ -5,7 +5,6 @@ resource "google_cloud_run_service" "default" {
   autogenerate_revision_name = true
 
   depends_on = [
-    google_project_service.container,
     google_project_service.run
   ]
 
