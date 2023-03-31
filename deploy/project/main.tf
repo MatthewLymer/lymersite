@@ -17,6 +17,11 @@ variable "github_token" {
   description = "The fine grained personal access token with read/write permissions for 'Secrets' on the target repository. See https://github.com/settings/tokens"
 }
 
+variable "alerting_email" {
+  type        = string
+  description = "The email address to send alerts to"
+}
+
 provider "google" {
   region  = local.region
   project = local.project.id

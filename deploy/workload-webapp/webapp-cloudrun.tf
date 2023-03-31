@@ -1,6 +1,20 @@
+locals {
+  cloud_run = {
+    name     = "webapp-service"
+    location = "us-central1"
+  }
+}
+
+data "google_cloud_run_service" "default" {
+  project  = local.project.id
+  name     = local.cloud_run.name
+  location = local.cloud_run.location
+}
+
 resource "google_cloud_run_service" "default" {
-  name     = "webapp-service"
-  location = "us-central1"
+  project  = local.project.id
+  name     = local.cloud_run.name
+  location = local.cloud_run.location
 
   autogenerate_revision_name = true
 
@@ -13,7 +27,7 @@ resource "google_cloud_run_service" "default" {
       timeout_seconds = 30
 
       containers {
-        image = var.webapp_image
+        image = coalesce(var.webapp_image, data.google_cloud_run_service.default.template[0].spec[0].containers[0].image)
         ports {
           container_port = 80
         }
