@@ -1,14 +1,23 @@
 FROM jekyll/jekyll:3.8 AS build
 
-WORKDIR /app/matthewlymer.github.io
+ARG GITHUB_PAGE_NAME=matthewlymer.github.io
 
-COPY ./matthewlymer.github.io /app/matthewlymer.github.io
-COPY ./.git /app/.git
+WORKDIR /src/${GITHUB_PAGE_NAME}
 
-RUN chown -R jekyll .
+# "jekyll build" will run do a "bundle install", which 
+# takes a long time, so instead run it before with just
+# the Gemfile and Gemfile.lock so it'll be cached by docker
+COPY ${GITHUB_PAGE_NAME}/Gemfile Gemfile
+COPY ${GITHUB_PAGE_NAME}/Gemfile.lock Gemfile.lock
+RUN bundle install
 
-RUN JEKYLL_ENV=production jekyll build
+COPY ${GITHUB_PAGE_NAME} .
+COPY .git ../.git
+
+RUN mkdir /output && chown jekyll /output
+
+RUN JEKYLL_ENV=production jekyll build --destination /output
 
 FROM httpd:2.4
 
-COPY --from=build /app/matthewlymer.github.io/_site /usr/local/apache2/htdocs
+COPY --from=build /output /usr/local/apache2/htdocs
