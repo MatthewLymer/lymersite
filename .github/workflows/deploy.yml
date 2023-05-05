@@ -14,4 +14,7 @@ jobs:
           terraform_version: 1.1.4
 
       - working-directory: ./deploy/workload-webapp
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_DEPLOYER_SA }}
         run: terraform init
+
