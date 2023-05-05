@@ -14,7 +14,7 @@ locals {
 
 variable "github_token" {
   type        = string
-  description = "The fine grained personal access token with read/write permissions for 'Secrets' on the target repository. See https://github.com/settings/tokens"
+  description = "The fine grained personal access token"
 }
 
 variable "alerting_email" {
