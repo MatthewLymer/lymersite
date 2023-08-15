@@ -1,6 +1,6 @@
 DOCKER_TAG:=$(shell git rev-parse HEAD)
-DOCKER_REGISTRY_DOMAIN:=gcr.io
-DOCKER_IMAGE:=$(DOCKER_REGISTRY_DOMAIN)/matthewlymer-lymersite/httpd:$(DOCKER_TAG)
+DOCKER_REGISTRY_DOMAIN:=us-central1-docker.pkg.dev
+DOCKER_IMAGE:=$(DOCKER_REGISTRY_DOMAIN)/matthewlymer-lymersite/default/httpd:$(DOCKER_TAG)
 
 .PHONY: build
 build:

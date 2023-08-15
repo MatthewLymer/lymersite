@@ -1,4 +1,4 @@
-resource "google_project_service" "container" {
+resource "google_project_service" "artifactregistry" {
   project = google_project.default.id
-  service = "container.googleapis.com"
+  service = "artifactregistry.googleapis.com"
 }
