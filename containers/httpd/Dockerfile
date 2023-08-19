@@ -16,7 +16,7 @@ COPY .git ../.git
 
 RUN mkdir /output && chown jekyll /output
 
-RUN JEKYLL_ENV=production jekyll build --destination /output
+RUN JEKYLL_ENV=production jekyll build --trace --destination /output
 
 FROM httpd:2.4
 
