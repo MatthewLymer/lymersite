@@ -9,11 +9,19 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
+
+      - uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_DEPLOYER_SA }}'
+
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.1.4
-      - working-directory: ./deploy/workload-webapp
+
+      - working-directory: ./deploy
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_DEPLOYER_SA }}
-        run: terraform init
 
+      - run: |
+          make push
+        
