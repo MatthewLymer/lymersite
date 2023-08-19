@@ -9,6 +9,8 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - uses: 'google-github-actions/auth@v1'
         with:
