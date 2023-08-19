@@ -21,7 +21,5 @@ jobs:
       - working-directory: ./deploy
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_DEPLOYER_SA }}
-
-      - run: |
+        run: |
           make push
-        
