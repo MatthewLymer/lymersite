@@ -11,16 +11,12 @@ COPY ${GITHUB_PAGE_NAME}/Gemfile Gemfile
 COPY ${GITHUB_PAGE_NAME}/Gemfile.lock Gemfile.lock
 RUN bundle install
 
-COPY ${GITHUB_PAGE_NAME} .
-COPY .git ../.git
-
-# github actions on docker gives
-# permission issue otherwise
-RUN chown 777 .
+COPY --chown=jekyll ${GITHUB_PAGE_NAME} .
+COPY --chown=jekyll .git ../.git
 
 RUN mkdir /output && chown jekyll /output
 
-RUN JEKYLL_ENV=production jekyll build --trace --destination /output
+RUN whoami && JEKYLL_ENV=production jekyll build --trace --destination /output
 
 FROM httpd:2.4
 
