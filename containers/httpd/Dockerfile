@@ -1,5 +1,8 @@
 FROM jekyll/jekyll:3.8 AS build
 
+ENV JEKYLL_UID=0
+ENV JEKYLL_GID=0
+
 ARG GITHUB_PAGE_NAME=matthewlymer.github.io
 
 WORKDIR /src/${GITHUB_PAGE_NAME}
@@ -11,12 +14,12 @@ COPY ${GITHUB_PAGE_NAME}/Gemfile Gemfile
 COPY ${GITHUB_PAGE_NAME}/Gemfile.lock Gemfile.lock
 RUN bundle install
 
-COPY --chown=jekyll ${GITHUB_PAGE_NAME} .
-COPY --chown=jekyll .git ../.git
+COPY ${GITHUB_PAGE_NAME} .
+COPY .git ../.git
 
 RUN mkdir /output && chown jekyll /output
 
-RUN whoami && JEKYLL_ENV=production jekyll build --trace --destination /output
+RUN JEKYLL_ENV=production jekyll build --trace --destination /output
 
 FROM httpd:2.4
 
