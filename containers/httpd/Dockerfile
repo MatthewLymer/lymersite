@@ -14,6 +14,10 @@ RUN bundle install
 COPY ${GITHUB_PAGE_NAME} .
 COPY .git ../.git
 
+# github actions on docker gives
+# permission issue otherwise
+RUN chown 777 .
+
 RUN mkdir /output && chown jekyll /output
 
 RUN JEKYLL_ENV=production jekyll build --trace --destination /output
