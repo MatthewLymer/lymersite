@@ -24,4 +24,5 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_DEPLOYER_SA }}
         run: |
+          mkdir matthewlymer.github.io/.jekyll-cache
           make push

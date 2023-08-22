@@ -1,8 +1,5 @@
 FROM jekyll/jekyll:3.8 AS build
 
-ENV JEKYLL_UID=0
-ENV JEKYLL_GID=0
-
 ARG GITHUB_PAGE_NAME=matthewlymer.github.io
 
 WORKDIR /src/${GITHUB_PAGE_NAME}
