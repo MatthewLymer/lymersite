@@ -20,7 +20,8 @@ jobs:
         with:
           terraform_version: 1.1.4
 
-      - env:
+      - name: Build image and push
+        env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_DEPLOYER_SA }}
         run: |
           mkdir matthewlymer.github.io/.jekyll-cache
