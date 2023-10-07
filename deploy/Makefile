@@ -4,8 +4,9 @@ DOCKER_IMAGE:=$(DOCKER_REGISTRY_DOMAIN)/matthewlymer-lymersite/default/httpd:$(D
 
 .PHONY: build
 build:
-	docker buildx build --tag=$(DOCKER_IMAGE) \
-		--cache-to type=gha \
+	docker buildx build \
+		--tag=$(DOCKER_IMAGE) \
+		--cache-to type=gha,mode=max \
 		--cache-from type=gha \
 		--platform=linux/amd64 \
 		--file="../containers/httpd/Dockerfile" \
