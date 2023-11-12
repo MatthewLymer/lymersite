@@ -1,10 +1,16 @@
 DOCKER_TAG:=$(shell git rev-parse HEAD)
-DOCKER_REGISTRY_DOMAIN:=gcr.io
-DOCKER_IMAGE:=$(DOCKER_REGISTRY_DOMAIN)/matthewlymer-lymersite/httpd:$(DOCKER_TAG)
+DOCKER_REGISTRY_DOMAIN:=us-central1-docker.pkg.dev
+DOCKER_IMAGE:=$(DOCKER_REGISTRY_DOMAIN)/matthewlymer-lymersite/default/httpd:$(DOCKER_TAG)
 
 .PHONY: build
 build:
-	docker build --platform=linux/amd64 --tag $(DOCKER_IMAGE) --file "../containers/httpd/Dockerfile" ../
+	docker buildx build \
+		--tag=$(DOCKER_IMAGE) \
+		--cache-to type=gha,mode=max \
+		--cache-from type=gha \
+		--platform=linux/amd64 \
+		--file="../containers/httpd/Dockerfile" \
+		../
 
 .PHONY: push
 push: build

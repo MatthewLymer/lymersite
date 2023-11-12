@@ -14,7 +14,7 @@ locals {
 
 variable "github_token" {
   type        = string
-  description = "The fine grained personal access token with read/write permissions for 'Secrets' on the target repository. See https://github.com/settings/tokens"
+  description = "The fine grained personal access token"
 }
 
 variable "alerting_email" {
@@ -39,7 +39,7 @@ resource "google_project" "default" {
 
 terraform {
   backend "gcs" {
-    bucket = "490635812867-tfstate"
+    bucket = "490635812867-tfstate" # TODO: this should probably be in a different bucket for security reasons
     prefix = "matthewlymer-lymersite-project"
   }
 
