@@ -23,8 +23,6 @@ jobs:
       - name: Build image and push
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_DEPLOYER_SA }}
-        run: | # https://stackoverflow.com/a/74795460/507793
-          export ACTIONS_CACHE_URL=$(echo "$ACTIONS_ID_TOKEN_REQUEST_URL" | grep -Po 'https://[^/]+/[^/]+/' | sed 's/pipelines/artifactcache/')
-          export ACTIONS_RUNTIME_TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
+        run: |
           mkdir matthewlymer.github.io/.jekyll-cache
           make -C ./deploy push
