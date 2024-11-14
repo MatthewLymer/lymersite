@@ -40,7 +40,7 @@ resource "google_monitoring_alert_policy" "uptime_policy" {
   display_name = "WebApp Uptime Check"
   combiner     = "OR"
 
-  enabled = true
+  enabled = false
 
   notification_channels = [
     data.google_monitoring_notification_channel.email.id
